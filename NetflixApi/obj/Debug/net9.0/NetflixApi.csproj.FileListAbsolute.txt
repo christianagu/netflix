@@ -258,3 +258,4 @@ C:\Users\xuts\Desktop\dev\netflix\NetflixApi\obj\Debug\net9.0\refint\NetflixApi.
 C:\Users\xuts\Desktop\dev\netflix\NetflixApi\obj\Debug\net9.0\NetflixApi.pdb
 C:\Users\xuts\Desktop\dev\netflix\NetflixApi\obj\Debug\net9.0\NetflixApi.genruntimeconfig.cache
 C:\Users\xuts\Desktop\dev\netflix\NetflixApi\obj\Debug\net9.0\ref\NetflixApi.dll
+C:\Users\xuts\Desktop\dev\netflix\NetflixApi\obj\Debug\net9.0\NetflixApi.sourcelink.json

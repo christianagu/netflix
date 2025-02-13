@@ -14,7 +14,7 @@ const Home = () => {
             <h1 className="text-2xl font-bold mb-4">Featured Movies</h1>
             <div className="grid grid-cols-4 gap-4">
                 {data.movies.map((movie) => (
-                    <movieCard key={movie.id} movie={movie}/>
+                    <MovieCard key={movie.id} movie={movie}/>
                 ))}
             </div>
         </div>

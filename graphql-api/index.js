@@ -1,5 +1,3 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
-
 const { ApolloServer, gql } = require("apollo-server");
 const axios = require("axios");
 

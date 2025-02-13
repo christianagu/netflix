@@ -19,6 +19,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<MoviesContext>(options =>
     options.UseNpgsql(connectionString));
 
+// Register DbContext with PostgreSQL
+builder.Services.AddDbContext<UsersContext>(options =>
+    options.UseNpgsql(connectionString));
+
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
