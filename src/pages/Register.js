@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { registerUser } from "../services/userService";
 import { useNavigate } from "react-router-dom";
+import { userSchema } from "../validators/userValidator"; // Import the validator
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 const Register = () => {
     const [user, setUser] = useState({ username: "", email: "", password: "" });
@@ -21,51 +23,74 @@ const Register = () => {
         }
     };
 
+
     return (
         <div className="flex-center mt-20">
-        <div className="card">
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-2xl font-semibold text-center mb-4">Register</h2>
-                {error && <p className="text-red-500 text-center">{error}</p>}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-gray-700">Username:</label>
-                        <input
-                            type="text"
-                            name="username"
-                            onChange={handleChange}
-                            required
-                            className="w-full p-2 border border-gray-300 rounded"
-                        />
+            <div className="card">
+                <div className="flex justify-center items-center min-h-screen bg-gray-100">
+                    <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+                        <h2 className="text-2xl font-semibold text-center mb-4">Register</h2>
+
+                        <Formik
+                            initialValues={{ username: "", email: "", password: "" }}
+                            validationSchema={userSchema}
+                            onSubmit={async (values, { setSubmitting, setErrors }) => {
+                                try {
+                                    await registerUser(values);
+                                    navigate("/login");
+                                } catch (err) {
+                                    setErrors({ server: "Registration failed. Try again." });
+                                }
+                                setSubmitting(false);
+                            }}
+                        >
+                            {({ isSubmitting, errors }) => (
+                                <Form className="space-y-4">
+                                    {errors.server && <p className="text-red-500 text-center">{errors.server}</p>}
+
+                                    <div>
+                                        <label className="block text-gray-700">Username:</label>
+                                        <Field
+                                            type="text"
+                                            name="username"
+                                            className="w-full p-2 border border-gray-300 rounded"
+                                        />
+                                        <ErrorMessage name="username" component="div" className="text-red-500" />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-gray-700">Email:</label>
+                                        <Field
+                                            type="email"
+                                            name="email"
+                                            className="w-full p-2 border border-gray-300 rounded"
+                                        />
+                                        <ErrorMessage name="email" component="div" className="text-red-500" />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-gray-700">Password:</label>
+                                        <Field
+                                            type="password"
+                                            name="password"
+                                            className="w-full p-2 border border-gray-300 rounded"
+                                        />
+                                        <ErrorMessage name="password" component="div" className="text-red-500" />
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="w-full bg-blue-500 text-white p-2 rounded"
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? "Registering..." : "Register"}
+                                    </button>
+                                </Form>
+                            )}
+                        </Formik>
                     </div>
-                    <div>
-                        <label className="block text-gray-700">Email:</label>
-                        <input
-                            type="email"
-                            name="email"
-                            onChange={handleChange}
-                            required
-                            className="w-full p-2 border border-gray-300 rounded"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-gray-700">Password:</label>
-                        <input
-                            type="password"
-                            name="password"
-                            onChange={handleChange}
-                            required
-                            className="w-full p-2 border border-gray-300 rounded"
-                        />
-                    </div>
-                    <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
-                        Register
-                    </button>
-                </form>
+                </div>
             </div>
-        </div>
-        </div>
         </div>
     );
 };

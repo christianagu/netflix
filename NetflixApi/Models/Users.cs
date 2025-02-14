@@ -2,7 +2,7 @@ namespace NetflixApi.Models;
 
 public class Users
 {
-    public long id { get; set; }
+    public Guid id { get; set; }
     public string username { get; set; } = string.Empty;
     public string email { get; set; } = string.Empty;
     public string passwordhash { get; set; } = string.Empty;
@@ -20,7 +20,7 @@ public class UpdateUserSettingsDTO
 
 public class RegisterUserDTO
 {
-    public long id { get; set; }
+    public Guid id { get; set; }
     public string username { get; set; } = string.Empty;
     public string email { get; set; } = string.Empty;
     public string password { get; set; } = string.Empty;
@@ -28,8 +28,9 @@ public class RegisterUserDTO
 
 public class LoginUserDTO
 {
-    public long id { get; set; }
+    public Guid id { get; set; }
     public string username { get; set; } = string.Empty;
     public string email { get; set; } = string.Empty;
     public string password { get; set; } = string.Empty;
 }
+

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/userService";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [credentials, setCredentials] = useState({ username: "", password: "" });
@@ -15,25 +15,45 @@ const Login = () => {
         e.preventDefault();
         try {
             await loginUser(credentials);
-            navigate("/"); // Redirect to home after login
+            navigate("/"); // Redirect to home after successful login
         } catch (err) {
-            setError("Invalid username or password");
+            setError("Login failed. Please check your credentials.");
         }
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <label>Username:</label>
-                <input type="username" name="username" onChange={handleChange} required />
+        <div className="flex-center mt-20">
+            <div className="card">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block text-gray-700">Username:</label>
+                        <input
+                            type="username"
+                            name="username"
+                            value={credentials.username}
+                            onChange={handleChange}
+                            className="w-full p-2 border border-gray-300 rounded"
+                        />
+                    </div>
 
-                <label>Password:</label>
-                <input type="password" name="password" onChange={handleChange} required />
+                    <div>
+                        <label className="block text-gray-700">Password:</label>
+                        <input
+                            type="password"
+                            name="password"
+                            value={credentials.password}
+                            onChange={handleChange}
+                            className="w-full p-2 border border-gray-300 rounded"
+                        />
+                    </div>
 
-                <button type="submit">Login</button>
-            </form>
+                    {error && <p className="text-red-500 text-center">{error}</p>}
+
+                    <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
+                        Login
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

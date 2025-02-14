@@ -7,7 +7,10 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
 using NuGet.ProjectModel;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-
+using FluentValidation;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace NetflixApi.Controllers;
 
@@ -16,47 +19,49 @@ namespace NetflixApi.Controllers;
 public class UserController : ControllerBase
 {
     private readonly UsersContext _context;
-
-    public UserController(UsersContext context)
+    private readonly IValidator<RegisterUserDTO> _validator;
+    
+public UserController(UsersContext context, IValidator<RegisterUserDTO> validator)
     {
         _context = context;
+        _validator = validator;
     }
 
     [HttpPost("register")]
     public async Task<ActionResult<Users>> RegisterUser([FromBody] RegisterUserDTO registerUserDTO)
     {
+        var validationResult = await _validator.ValidateAsync(registerUserDTO);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         if (await _context.Users.AnyAsync(u => u.email == registerUserDTO.email))
         {
             return BadRequest("Email is already registered.");
         }
 
-        // Generate salt
         byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
-
-        // hash password
         string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: registerUserDTO.password!,
+            password: registerUserDTO.password ?? string.Empty,
             salt: salt,
             prf: KeyDerivationPrf.HMACSHA256,
             iterationCount: 100000,
-            numBytesRequested: 256/ 8));
-        
-        // Create new user
+            numBytesRequested: 256 / 8));
+
         var newUser = new Users
         {
             username = registerUserDTO.username,
             email = registerUserDTO.email,
             passwordhash = hashedPassword,
-            secret = Convert.ToBase64String(salt), // Store the salt for validation
-            apitoken = Guid.NewGuid().ToString() // Generate an API token
+            secret = Convert.ToBase64String(salt),
+            apitoken = Guid.NewGuid().ToString()
         };
 
-        //// Hash password and save the user
         _context.Users.Add(newUser);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(RegisterUser), new { id = newUser.id }, newUser);
-
     }
 
     
@@ -103,4 +108,30 @@ public class UserController : ControllerBase
         
         return NoContent();
     }
+
+    [HttpGet("me")]
+    [Authorize(AuthenticationSchemes = "ApiToken")] // Requires authentication using API token
+    public async Task<IActionResult> GetCurrentUser()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim == null)
+        {
+            return Unauthorized();
+        }
+
+        if (!Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        return Ok(user);
+    }
+
+
 }
