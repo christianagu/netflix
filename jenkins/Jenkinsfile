@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build Docker Images') {
+            steps {
+                script {
+                    sh 'docker-compose build'
+                }
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                script {
+                    sh 'docker-compose run netflix-api dotnet test'
+                    sh 'docker-compose run graphql-api npm test'
+                }
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    sh 'kubectl apply -f kubernetes/manifests'
+                }
+            }
+        }
+    }
+}

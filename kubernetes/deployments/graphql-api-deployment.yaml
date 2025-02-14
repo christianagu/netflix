@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graphql-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: graphql-api
+  template:
+    metadata:
+      labels:
+        app: graphql-api
+    spec:
+      containers:
+        - name: graphql-api
+          image: graphql-api:latest
+          ports:
+            - containerPort: 5159
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: CONNECTION_STRING
+              value: "Host=postgres;Database=netflix;Username=admin;Password=secret"

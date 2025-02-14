@@ -1,67 +1,39 @@
 version: '3.8'
-
 services:
-  kong-database:
-    image: postgres:13
-    container_name: kong-database
+  postgres:
+    image: postgres:15
     environment:
-      POSTGRES_USER: kong
-      POSTGRES_DB: kong
-      POSTGRES_PASSWORD: kong
+      POSTGRES_DB: netflix
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
     ports:
       - "5432:5432"
-    networks:
-      - kong-network
-
-  kong-migrations:
-    image: kong/kong-gateway:latest
-    container_name: kong-migrations
+  
+  netflix-api:
+    build:
+      context: ../NetflixApi(.net)
+      dockerfile: ../docker/Dockerfile
     depends_on:
-      - kong-database
-    environment:
-      KONG_DATABASE: postgres
-      KONG_PG_HOST: kong-database
-      KONG_PG_USER: kong
-      KONG_PG_PASSWORD: kong
-    command: kong migrations bootstrap
-    networks:
-      - kong-network
-
-  kong:
-    image: kong/kong-gateway:latest
-    container_name: kong
-    depends_on:
-      - kong-database
-      - kong-migrations
-    environment:
-      KONG_DATABASE: postgres
-      KONG_PG_HOST: kong-database
-      KONG_PG_USER: kong
-      KONG_PG_PASSWORD: kong
-      KONG_PROXY_ACCESS_LOG: /dev/stdout
-      KONG_ADMIN_ACCESS_LOG: /dev/stdout
-      KONG_PROXY_ERROR_LOG: /dev/stderr
-      KONG_ADMIN_ERROR_LOG: /dev/stderr
-      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      - postgres
     ports:
-      - "8000:8000"  # Public API requests
-      - "8001:8001"  # Admin API
-      - "8443:8443"
-      - "8444:8444"
-    networks:
-      - kong-network
+      - "5000:5000"
+    environment:
+      - CONNECTION_STRING=Host=postgres;Database=netflix;Username=admin;Password=secret
 
-  konga:
-    image: pantsel/konga
-    container_name: konga
-    restart: always
+  graphql-api:
+    build:
+      context: ../graphql-api
+      dockerfile: ../docker/Dockerfile.graphql
     depends_on:
-      - kong
+      - netflix-api
     ports:
-      - "1337:1337"  # Konga Admin UI
-    networks:
-      - kong-network
+      - "4000:4000"
 
-networks:
-  kong-network:
-    driver: bridge
+  react-client:
+    build:
+      context: ../src
+      dockerfile: ../docker/Dockerfile.react
+    ports:
+      - "3000:3000"
+    depends_on:
+      - graphql-api

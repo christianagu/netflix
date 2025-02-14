@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netflix-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: netflix-api
+  template:
+    metadata:
+      labels:
+        app: netflix-api
+    spec:
+      containers:
+        - name: netflix-api
+          image: netflix-api:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: CONNECTION_STRING
+              value: "Host=postgres;Database=netflix;Username=admin;Password=secret"

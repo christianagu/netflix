@@ -1,8 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@custom-variant dark (&:where(.dark, .dark *));
+@headlessui/react;
 
 /* Custom Global Styles */
 :root {

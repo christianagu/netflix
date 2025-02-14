@@ -11,20 +11,22 @@ const Navbar = () => {
 
     return (
         <nav className="p-4 bg-black text-white flex gap-4">
-            <Link to="/">Home</Link>
-            <Link to="/movies">Movies</Link>
+            <div className="container mx-auto flex justify-between">
+                <Link to="/">Home</Link>
+                <Link to="/movies">Movies</Link>
 
-            {!isAuthenticated ? (
-                <>
-                    <Link to="/login">Login</Link>
-                    <Link to="/register">Register</Link>
-                </>
-            ) : (
-                <>
-                    <Link to="/settings">Settings</Link>
-                    <button onClick={handleLogout} className="text-red-500">Logout</button>
-                </>
-            )}
+                {!isAuthenticated ? (
+                    <>
+                        <Link to="/login">Login</Link>
+                        <Link to="/register">Register</Link>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/settings">Settings</Link>
+                        <button onClick={handleLogout} className="text-red-500">Logout</button>
+                    </>
+                )}
+            </div>
         </nav>
     );
 };
