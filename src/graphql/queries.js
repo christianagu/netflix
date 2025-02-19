@@ -6,6 +6,7 @@ export const GET_MOVIES = gql`
       id
       title
       description
+      genre
     }
   }
 `;

@@ -22,12 +22,14 @@ public class NetflixApiController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<NetflixMoviesDTO>>> GetMovies()
     {
+        var baseUrl = "http://localhost/cdn/";
         return await _context.NetflixMovies
             .Select(x => new NetflixMoviesDTO
             {
                 id = x.id,
                 title = x.title,
-                description = x.description
+                description = x.description,
+                genre = x.genre
             })
             .ToListAsync();
     }

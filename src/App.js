@@ -1,5 +1,4 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"; // already fixed above
-import './App.css'; // Keep this, as it's used for styling
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
@@ -10,7 +9,6 @@ import UserCardSettings from "./components/UserCardSettings";
 import Layout from "./components/Layout";
 import React, { useState } from 'react';
 import { UserProvider } from './context/UserContext';
-
 import './assets/css/global.css';
 
 // Set up Apollo Client
@@ -19,11 +17,9 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-
 const PrivateRoute = ({ element }) => {
   return localStorage.getItem("token") ? element : <Navigate to="/login" replace />;
 };
-
 
 function App() {
   const [user, setUser] = useState({

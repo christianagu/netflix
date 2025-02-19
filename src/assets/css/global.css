@@ -11,6 +11,11 @@
   --card-bg: #ffffff; /* Card background color */
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
 /* Body Styling */
 body {
   font-family: 'Inter', sans-serif; /* Default font */
@@ -19,6 +24,34 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.navbar {
+  background-color: var(--primary-color);
+  /* or custom height, etc. */
+}
+
+.navbar-text {
+  color: #e5e7eb; /* e.g., Tailwind’s gray-300 */
+  font-family: 'Inter', sans-serif;
+  text-indent: 50%;
+  /* Optionally define hover or active states too */
+}
+
+.navbar-link:hover {
+  color: #ffffff; /* white text on hover */
+  background-color: #374151; /* hover:bg-gray-700 */
+}
+
+/* Custom Utility Classes for image sizes */
+.size-8 {
+  width: 2rem;
+  height: 2rem;
+}
+
+.size-10 {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 /* Page Container */
@@ -93,7 +126,7 @@ select:focus {
 
 /* Utility Classes for Spacing */
 .mt-20 {
-  margin-top: 5rem; /* 20 units */
+  margin-top: 5rem;
 }
 
 .mb-20 {
@@ -130,7 +163,7 @@ select:focus {
 }
 
 .text-gray-700 {
-  color: #4a4a4a; /* Slightly lighter gray for text */
+  color: #4a4a4a;
 }
 
 /* Layout: Flexbox Helpers */
@@ -148,6 +181,7 @@ select:focus {
 
 .items-center {
   align-items: center;
+  padding-right: 3%;
 }
 
 .justify-center {

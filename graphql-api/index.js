@@ -7,8 +7,8 @@ const typeDefs = gql`
     id: ID!
     title: String!
     description: String
-    genre: String
     releaseYear: Int
+    genre: String!
     }
 
     type Query {

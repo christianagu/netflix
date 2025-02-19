@@ -18,10 +18,10 @@
 .env.test.local
 .env.production.local
 NetflixApi/appsettings*
-NetflixApi/Migrations
-./NetflixApi/appsettings*
-./NetflixApi/Migrations
-
+NetflixApi/Migrations/*
+NetflixApi/bin/Debug/*
+NetflixApi/obj/*
+NetflixApi/bin/*
 .appsettings*
 
 npm-debug.log*
@@ -429,3 +429,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+NetflixApi/bin/Debug/net9.0/NetflixApi.dll

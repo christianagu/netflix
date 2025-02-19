@@ -5,7 +5,9 @@
   "dependencies": {
     "@apollo/client": "^3.12.11",
     "@headlessui/react": "^2.2.0",
+    "@headlessui/vue": "^1.7.23",
     "@heroicons/react": "^2.2.0",
+    "@heroicons/vue": "^2.2.0",
     "@tailwindcss/vite": "^4.0.6",
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
@@ -14,7 +16,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "yup": "^1.6.1"
   },
   "scripts": {
@@ -44,7 +46,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.2",
-    "tailwindcss": "^4.0.6",
+    "tailwindcss": "^4.0.7",
     "web-vitals": "^4.2.4"
   }
 }

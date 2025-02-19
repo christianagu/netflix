@@ -15,6 +15,7 @@ public class NetflixMovies
     public string? listed_in { get; set; } = string.Empty;
     public string? description { get; set; } = string.Empty;
     public string? secret { get; set; }
+    public string? genre { get; set;} = string.Empty;
 }
 
 public class NetflixMoviesDTO
@@ -22,5 +23,6 @@ public class NetflixMoviesDTO
     public long id { get; set; }
     public string? title { get; set; }
     public string? description { get; set; }
+    public string? genre { get; set; }
 
 }

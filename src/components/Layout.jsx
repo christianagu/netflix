@@ -6,6 +6,7 @@ import { updateUserSettings } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { Container } from "postcss";
 
 const userNavigation = [
     { name: 'Settings', href: '/settings' },
@@ -23,23 +24,23 @@ export default function Layout() {
     const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
     useEffect(() => {
-      const handleLocationChange = () => setCurrentPath(window.location.pathname);
-      window.addEventListener("popstate", handleLocationChange);
-      return () => window.removeEventListener("popstate", handleLocationChange);
+        const handleLocationChange = () => setCurrentPath(window.location.pathname);
+        window.addEventListener("popstate", handleLocationChange);
+        return () => window.removeEventListener("popstate", handleLocationChange);
     }, []);
-    
+
     const navigation = isAuthenticated
-         ? [
-             { name: "Home", href: "/", current: currentPath === "/" },
-             { name: "Movies", href: "/movies", current: currentPath === "/movies" },
-             { name: "Settings", href: "/settings", current: currentPath === "/settings" },
-         ]
-         : [
-             { name: "Home", href: "/", current: currentPath === "/" },
-             { name: "Movies", href: "/movies", current: currentPath === "/movies" },
-             { name: "Login", href: "/login", current: currentPath === "/login" },
-             { name: "Register", href: "/register", current: currentPath === "/register" },
-         ];
+        ? [
+            { name: "Home", href: "/", current: currentPath === "/" },
+            { name: "Movies", href: "/movies", current: currentPath === "/movies" },
+            { name: "Settings", href: "/settings", current: currentPath === "/settings" },
+        ]
+        : [
+            { name: "Home", href: "/", current: currentPath === "/" },
+            { name: "Movies", href: "/movies", current: currentPath === "/movies" },
+            { name: "Login", href: "/login", current: currentPath === "/login" },
+            { name: "Register", href: "/register", current: currentPath === "/register" },
+        ];
 
     const { setUser } = useUser(); // Ensure you can update user state
 
@@ -55,9 +56,9 @@ export default function Layout() {
     const imageUrl = user?.imageUrl || 'https://example.com/default-avatar.jpg';
 
     return (
-        <div className="min-h-full">
+        <div className="min-h-full flex flex-col">
             {/* Navbar */}
-            <Disclosure as="nav" className="bg-gray-800">
+            <Disclosure as="nav" className="navbar shadow-sm">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 items-center justify-between">
                         <div className="flex items-center">
@@ -68,7 +69,7 @@ export default function Layout() {
                                     className="size-8"
                                 />
                             </div>
-                            <div className="hidden md:block">
+                            <div className="navbar-text hidden md:block">
                                 <div className="ml-10 flex items-baseline space-x-4">
                                     {navigation.map((item) => (
                                         <a
@@ -76,7 +77,7 @@ export default function Layout() {
                                             href={item.href}
                                             className={classNames(
                                                 item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                'rounded-md px-3 py-2 text-sm font-medium',
+                                                'navbar-link rounded-md px-3 py-2 text-sm font-medium',
                                             )}
                                         >
                                             {item.name}
@@ -114,7 +115,7 @@ export default function Layout() {
                             </div>
                         </div>
                         <div className="-mr-2 flex md:hidden">
-                        
+
                         </div>
                     </div>
                 </div>
@@ -161,6 +162,15 @@ export default function Layout() {
                     </div>
                 </DisclosurePanel>
             </Disclosure>
+
+            {/* Header */}
+            <header className="bg-white shadow-sm">
+                <div className="mx-auto max-w-7x1 px-4 py-6 sm:px-6 lg:px-8">
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+                        Dash
+                    </h1>
+                </div>
+            </header>
 
             {/* Page Content */}
             <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex-grow">
